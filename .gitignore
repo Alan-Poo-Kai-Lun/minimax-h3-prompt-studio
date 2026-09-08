@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# PyInstaller output
+build/
+dist/
+
+# Legacy local build specifications
+H3PromptStudio-v*.spec
+H3PromptStudio-Hybrid-v*.spec
+H3PromptStudio.spec
+!H3PromptStudio-v0.6.1.spec
+
+# Editors and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs, temporary files and local exports
+*.log
+*.tmp
+*.bak
+*.zip
+*.h3project
+*.h3-project
+
+# Retired standalone HTML distribution
+HTML版使用说明.txt
+启动HTML版.bat
