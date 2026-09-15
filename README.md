@@ -28,7 +28,8 @@
 
 运行 python server.py，浏览器通常会自动打开 http://127.0.0.1:8765；也可以双击 start.bat。
 
-软件默认连接 Ollama http://127.0.0.1:11434。其他本地或局域网服务可在设置中配置。
+软件默认连接 Ollama http://127.0.0.1:11434 
+其他本地或局域网服务可在设置中配置。
 
 ## 构建 Windows 便携版
 
@@ -39,6 +40,7 @@
 ## ComfyUI 插件
 
 将 comfyui_plugin/ComfyUI-H3-Prompt-Studio 复制到 ComfyUI 的 custom_nodes 目录，然后重启 ComfyUI。详细说明见插件目录中的 README。
+暂时还未完整，还没修复bug
 
 ## 隐私
 
