@@ -1,0 +1,129 @@
+/* v0.7 desktop workbench: prompt, generation setup, and output stay visible together. */
+.shell {
+  max-width: 1920px;
+  margin: 22px auto;
+  padding: 0 20px 32px;
+  grid-template-columns: minmax(300px, 1.05fr) 10px minmax(280px, .92fr) 10px minmax(330px, 1.08fr);
+  gap: 0;
+  align-items: start;
+}
+
+.controls { display: contents; }
+
+.pane-splitter {
+  position: relative;
+  align-self: stretch;
+  min-height: 650px;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.pane-splitter::before {
+  content: "";
+  position: absolute;
+  inset: 12px 3px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background .15s, box-shadow .15s;
+}
+
+.pane-splitter:hover::before,
+.pane-splitter:focus-visible::before,
+body.is-resizing .pane-splitter::before {
+  background: var(--yellow);
+  box-shadow: 0 0 14px #ffd52a55;
+}
+
+body.is-resizing { cursor: col-resize; user-select: none; }
+
+.workbench-column {
+  min-width: 0;
+  height: calc(100vh - 132px);
+  min-height: 650px;
+  padding: 22px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.workbench-column,
+.output-panel {
+  scrollbar-width: thin;
+  scrollbar-color: #414650 transparent;
+}
+
+.pane-toolbar {
+  min-height: 32px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pane-toolbar > div { display: flex; gap: 6px; }
+.pane-toolbar strong { color: #d8dce4; font-size: 12px; letter-spacing: .04em; }
+.pane-tool { padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: #16191f; color: var(--muted); font-size: 11px; cursor: pointer; }
+.pane-tool:hover { color: var(--yellow); border-color: #76691f; }
+.pane-focus.is-active { color: #111; background: var(--yellow); border-color: var(--yellow); font-weight: 800; }
+html[data-theme="light"] .pane-toolbar strong { color: #344054; }
+html[data-theme="light"] .pane-tool { background: #f4f6f8; }
+
+.column-heading {
+  padding-bottom: 17px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.column-heading h2 { margin: 0 0 5px; font-size: 21px; }
+.column-heading small { color: var(--muted); }
+.column-kicker { margin: 0 0 7px; color: var(--yellow); font: 700 10px/1 monospace; letter-spacing: .18em; }
+.prompt-column .project-bar { margin-bottom: 16px; }
+.prompt-column .script-workflow { margin-bottom: 0; }
+.generation-column > .section-title:first-of-type { margin-top: 0; }
+
+.output-panel {
+  top: 104px;
+  height: calc(100vh - 132px);
+  min-height: 650px;
+  padding: 22px;
+}
+
+.shell[data-layout-focus] { grid-template-columns: minmax(0, 1fr); }
+.shell[data-layout-focus] .pane-splitter { display: none; }
+.shell[data-layout-focus="prompt"] .generation-column,
+.shell[data-layout-focus="prompt"] .output-panel,
+.shell[data-layout-focus="generation"] .prompt-column,
+.shell[data-layout-focus="generation"] .output-panel,
+.shell[data-layout-focus="result"] .prompt-column,
+.shell[data-layout-focus="result"] .generation-column { display: none; }
+.shell[data-layout-focus] .workbench-column,
+.shell[data-layout-focus] .output-panel { width: 100%; max-width: none; }
+
+@media (max-width: 1450px) and (min-width: 1121px) {
+  .topbar { padding-left: 24px; padding-right: 24px; }
+  .top-actions { gap: 6px; }
+  .top-actions .ghost { padding-left: 9px; padding-right: 9px; }
+  .prompt-column .project-bar { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .prompt-column .project-bar input { grid-column: 1 / -1; min-width: 0; }
+  .prompt-column .project-bar > :not(input) { min-width: 0; padding-left: 7px; padding-right: 7px; }
+  .output-head { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .model-box { width: 100%; }
+  .model-box select { min-width: 0; }
+}
+
+@media (max-width: 1120px) {
+  .shell { grid-template-columns: minmax(350px, 1fr) minmax(330px, .92fr); gap: 16px; }
+  .pane-splitter { display: none; }
+  .output-panel { grid-column: 1 / -1; position: relative; top: auto; height: 760px; }
+  .workbench-column { height: auto; min-height: 680px; }
+  .ratio-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .output-panel { grid-column: auto; height: 780px; }
+  .workbench-column { min-height: 0; height: auto; }
+}

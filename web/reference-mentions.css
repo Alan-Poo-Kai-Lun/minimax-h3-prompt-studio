@@ -5,6 +5,9 @@
 .reference-chip-main, .reference-chip-add { border: 0 !important; background: transparent !important; color: inherit; cursor: pointer; padding: 0; }
 .reference-chip-main { display: flex; align-items: center; gap: 6px; padding: 4px 7px 4px 5px; }
 .reference-chip-main > img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+.reference-kind-icon, .mention-kind-icon { display: inline-grid; place-items: center; flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px; background: rgba(255,210,26,.12); color: #ffd21a; font-style: normal; font-size: 12px; }
+.reference-kind-icon.audio, .mention-kind-icon.audio { background: rgba(105,184,255,.12); color: #8dccff; }
+.mention-menu .mention-kind-icon { width: 42px; height: 42px; font-size: 16px; }
 .reference-chip-main b { font-size: 12px; color: #b6cadb; }
 .reference-chip-main small { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .reference-chip-add { width: 28px; border-left: 1px solid var(--line, #2a3442) !important; border-radius: 0 999px 999px 0 !important; font-size: 16px; }
@@ -19,6 +22,8 @@
 .mention-highlight-content { width: 100%; min-height: 100%; white-space: pre-wrap; overflow-wrap: break-word; color: transparent; font: inherit; line-height: 1.7; }
 .inline-picture-token { position: relative; display: inline; padding: 0; margin: 0; border-radius: 2px; color: #b7cddd; background: rgba(115,153,180,.12); box-shadow: inset 0 -1px 0 rgba(151,190,216,.65); font: inherit; pointer-events: auto; cursor: zoom-in; }
 .inline-picture-token.missing { color: #ff6577; background: rgba(255,101,119,.14); box-shadow: inset 0 0 0 1px rgba(255,101,119,.4); cursor: help; }
+.inline-video { color: #ffe168; background: rgba(255,210,26,.10); box-shadow: inset 0 -1px 0 rgba(255,210,26,.65); cursor: pointer; }
+.inline-audio { color: #9dd4ff; background: rgba(105,184,255,.10); box-shadow: inset 0 -1px 0 rgba(105,184,255,.65); cursor: pointer; }
 .inline-picture-preview { display: none; position: fixed; z-index: 120; width: 250px; padding: 9px; margin: 24px 0 0 -90px; border: 1px solid #ffd21a; border-radius: 12px; background: #10151d; color: var(--text); box-shadow: 0 20px 55px #000c; }
 .inline-picture-preview img { display: block; width: 100%; height: 155px; object-fit: contain; border-radius: 8px; background: #080a0d; }
 .inline-picture-preview b, .inline-picture-preview small { display: block; margin-top: 6px; }

@@ -2,19 +2,24 @@
 
 本地优先的 MiniMax H3 提示词工作台，通过本机或局域网 AI 后端生成 T2VA、I2VA、FL2VA、L2VA、Ref2VA 和 Hybrid 提示词。
 
-当前版本：**v0.6.1**
+当前版本：**v0.8.4**
 
 ## 主要功能
 
+- 桌面三栏工作台：左侧提示词/剧本，中间生成设置与参考素材，右侧生成结果
+- 支持拖动分隔线调整栏宽、专注单栏、自动恢复上次布局
 - 直接提示词与“创意 → 分段剧本 → 人工确认 → H3 提示词”两种工作流
 - T2VA、I2VA、FL2VA、L2VA、Ref2VA、Hybrid 模式
 - 最多 12 张参考图，支持 Picture 编号、用途说明、预览、复制、替换和拖拽排序
 - 拖拽后同步更新创意、剧本及结果中的 Picture 引用
 - 支持粘贴系统剪贴板图片和截图
-- Hybrid 首尾关键帧、参考图、声音参考及多种音频模式
+- Hybrid 可自由组合参考图片、最多 3 个独立 Video 和声音参考，首尾帧均为可选
+- Picture、Video、Audio 均可通过 `@` 插入引用；视频和声音支持选择或拖入文件
+- 模式切换保留素材；Video 支持自定义时间截帧，Video/Audio 均提供播放器与媒体信息
 - Ollama 与 OpenAI 兼容 API 后端
 - 生成后自动释放本地模型显存
 - 自定义创意 Skill、模板、项目、历史记录和中英文界面
+- 历史、模板和 Skill 使用可搜索浮层管理，不占用三栏工作区
 - ComfyUI 辅助插件
 
 ## 本地运行
@@ -27,9 +32,9 @@
 
 ## 构建 Windows 便携版
 
-先运行 python -m pip install -r requirements-build.txt，再运行 python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.6.1.spec。
+先运行 python -m pip install -r requirements-build.txt，再运行 python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.4.spec。
 
-生成文件位于 dist/H3PromptStudio-v0.6.1.exe。模型和 Ollama 不包含在 EXE 中。
+生成文件位于 dist/H3PromptStudio-v0.8.4.exe。模型和 Ollama 不包含在 EXE 中。
 
 ## ComfyUI 插件
 
