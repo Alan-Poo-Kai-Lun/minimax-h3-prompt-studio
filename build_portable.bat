@@ -5,9 +5,9 @@ echo [1/3] Installing packaging tools...
 python -m pip install -r requirements-build.txt
 if errorlevel 1 goto :error
 echo [2/3] Building single-file Windows app...
-python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.4.spec
+python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.16.spec
 if errorlevel 1 goto :error
-echo [3/3] Complete: dist\H3PromptStudio-v0.8.4.exe
+echo [3/3] Complete: dist\H3PromptStudio-v0.8.16.exe
 pause
 exit /b 0
 :error

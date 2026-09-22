@@ -1,0 +1,24 @@
+.bilingual-language-field { grid-column: 1 / -1; }
+.bilingual-language-field.hidden { display: none; }
+.script-language-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.025);
+}
+.script-language-tabs.hidden { display: none; }
+.script-language-tabs button.active {
+  color: #121212;
+  border-color: var(--yellow);
+  background: var(--yellow);
+}
+.script-language-tabs small { color: var(--muted); margin-right: auto; }
+#scriptResult.bilingual-source { border-color: rgba(255,211,35,.32); background: rgba(7,10,13,.78); }
+@media (max-width: 720px) {
+  .script-language-tabs small { flex-basis: 100%; order: 3; }
+}

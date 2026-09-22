@@ -4,9 +4,11 @@
 
 A local-first desktop prompt workbench for MiniMax H3. Build T2VA, I2VA, FL2VA, L2VA, Ref2VA, and Hybrid prompts with visual references, video and audio guidance, script planning, reusable skills, and local or LAN AI backends.
 
-**Current version:** v0.8.4 · **Platform:** Windows · **UI:** English / 简体中文
+**Current source version:** v0.8.16 · **Latest published portable release:** v0.8.4 · **Platform:** Windows · **UI:** English / 简体中文
 
-[Download H3PromptStudio-v0.8.4.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.4) · [Changelog](CHANGELOG.md)
+[Download the published v0.8.4 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.4) · [Changelog](CHANGELOG.md)
+
+The published EXE is older than the current source. To use the latest fixes, run from source or build the portable EXE using the instructions below.
 
 ![MiniMax H3 Prompt Studio three-column workspace](docs/screenshots/workspace-en.png)
 
@@ -104,10 +106,10 @@ The plugin is a companion integration and remains a test build. It is not yet fe
 
 ```powershell
 python -m pip install -r requirements-build.txt
-python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.4.spec
+python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.16.spec
 ```
 
-The output is written to `dist/H3PromptStudio-v0.8.4.exe`. Build artifacts and release executables are intentionally excluded from Git history.
+The output is written to `dist/H3PromptStudio-v0.8.16.exe`. Build artifacts and release executables are intentionally excluded from Git history.
 
 ## Troubleshooting
 

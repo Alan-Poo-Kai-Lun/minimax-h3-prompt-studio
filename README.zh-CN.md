@@ -4,9 +4,11 @@
 
 本地优先的 MiniMax H3 桌面提示词工作台。通过本机或局域网 AI 后端生成 T2VA、I2VA、FL2VA、L2VA、Ref2VA 和 Hybrid 提示词，并集中管理图片、视频、声音参考、剧本策划与可复用 Skill。
 
-**当前版本：** v0.8.4 · **平台：** Windows · **界面语言：** English / 简体中文
+**当前源码版本：** v0.8.16 · **最新已发布便携版：** v0.8.4 · **平台：** Windows · **界面语言：** English / 简体中文
 
 [下载 H3PromptStudio-v0.8.4.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.4) · [完整更新日志](CHANGELOG.md)
+
+已发布的 EXE 版本早于当前源码；要使用最新修复，请从源码运行，或按下文自行构建便携版。
 
 ![MiniMax H3 Prompt Studio 三栏工作区](docs/screenshots/workspace-en.png)
 
@@ -104,10 +106,10 @@ Hybrid 可以使用任意有效的 Picture、Video、Audio 组合，不再强制
 
 ```powershell
 python -m pip install -r requirements-build.txt
-python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.4.spec
+python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.16.spec
 ```
 
-生成文件位于 `dist/H3PromptStudio-v0.8.4.exe`。构建目录和发布 EXE 不进入 Git 历史。
+生成文件位于 `dist/H3PromptStudio-v0.8.16.exe`。构建目录和发布 EXE 不进入 Git 历史。
 
 ## 常见问题
 

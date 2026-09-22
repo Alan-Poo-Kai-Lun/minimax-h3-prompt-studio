@@ -6,6 +6,7 @@ Requires the development-only Playwright Python package and Chromium.
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -63,16 +64,64 @@ with sync_playwright() as playwright:
     assert page.locator("#directWorkflow .section-title > span").inner_text() == "01"
     assert page.locator(".generation-column > .section-title").first.locator("> span").inner_text() == "02"
     assert page.locator(".generation-column > .section-title").nth(1).locator("> span").inner_text() == "03"
+    page.locator("#promptOutputLanguage").select_option("custom")
+    assert page.locator("#customPromptLanguage").is_visible()
+    assert_english(page, "custom H3 language")
+    page.locator("#promptOutputLanguage").select_option("en")
     page.locator("[data-workflow='script']").click()
     assert not page.locator("#directWorkflow").is_visible()
     assert page.locator("#generate").is_disabled()
     assert_english(page, "script workflow")
-    page.locator("#scriptResult").fill("=== Segment 1 ===\nApproved test script")
+    page.route(
+        "**/api/script-review",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=json.dumps({
+                "review": "=== STORY REVIEW ===\noverall_score: 84\nverdict: PASS\nsummary:\nThe story is coherent.",
+                "revisedScript": "=== Segment 1 ===\nduration: 5 seconds\nvisual_action: Revised approved test script.",
+                "score": 84,
+                "verdict": "PASS",
+                "ruleIssues": [{"severity": "warning", "messageZh": "测试提醒", "messageEn": "Test warning"}],
+            }),
+        ),
+    )
+    if not page.locator("#model").input_value():
+        page.locator("#model").evaluate("select => { const option = new Option('test-model', 'test-model'); select.add(option); select.value = 'test-model'; }")
+    page.locator("#scriptResult").fill("=== Segment 1 ===\nduration: 5 seconds\nvisual_action: Approved test script")
+    page.locator("#reviewScript").click()
+    page.locator("#storyReviewPanel").wait_for(state="visible")
+    assert page.locator("#storyReviewScore").inner_text() == "84/100"
+    assert page.locator("#storyRuleIssues").inner_text() == "Test warning"
+    assert not page.locator("#applyRevisedScript").is_disabled()
+    assert page.locator("#storyReviewPanel").evaluate("panel => panel.scrollWidth <= panel.clientWidth + 1")
+    assert page.locator("#scriptWorkflow .workflow-steps span").count() == 5
+    assert_english(page, "story review")
+    page.locator("#applyRevisedScript").click()
+    assert "Revised approved test script" in page.locator("#scriptResult").input_value()
+    assert page.evaluate("snapshot().storyReview.score") == 84
+    page.evaluate("savedReviewSnapshot = snapshot(); clearStoryReview(); applySnapshot(savedReviewSnapshot)")
+    page.locator("#storyReviewPanel").wait_for(state="visible")
+    assert page.locator("#storyReviewScore").inner_text() == "84/100"
+    assert_english(page, "restored story review")
     page.locator("#confirmScript").click()
     assert page.locator("#directWorkflow").is_visible()
     assert not page.locator("#generate").is_disabled()
-    assert "Approved test script" in page.locator("#idea").input_value()
+    assert "Revised approved test script" in page.locator("#idea").input_value()
     assert_english(page, "approved script enters Direct prompt")
+    page.route(
+        "**/api/generate-stream",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/x-ndjson",
+            body='{"type":"chunk","text":"raw model output"}\n{"type":"status","messageZh":"正在修复自定义语言……","messageEn":"Repairing custom language…"}\n{"type":"done","warnings":[],"dialogueRestored":2,"languageRepaired":true,"final":"final H3 output with dialogue"}\n',
+        ),
+    )
+    page.locator("#generate").click()
+    page.wait_for_function("document.querySelector('#result').value === 'final H3 output with dialogue'")
+    assert "restored 2 dialogue line(s)" in page.locator("#resultMeta").inner_text()
+    assert "custom language repaired" in page.locator("#resultMeta").inner_text()
+    assert_english(page, "dialogue restoration status")
     page.locator("details.advanced summary").click()
     assert_english(page, "advanced settings")
 
