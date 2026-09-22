@@ -4,11 +4,11 @@
 
 A local-first desktop prompt workbench for MiniMax H3. Build T2VA, I2VA, FL2VA, L2VA, Ref2VA, and Hybrid prompts with visual references, video and audio guidance, script planning, reusable skills, and local or LAN AI backends.
 
-**Current source version:** v0.8.16 · **Latest published portable release:** v0.8.4 · **Platform:** Windows · **UI:** English / 简体中文
+**Current source version:** v0.8.16 · **Latest published portable release:** v0.8.16 · **Platform:** Windows · **UI:** English / 简体中文
 
-[Download the published v0.8.4 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.4) · [Changelog](CHANGELOG.md)
+[Download the v0.8.16 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [Changelog](CHANGELOG.md)
 
-The published EXE is older than the current source. To use the latest fixes, run from source or build the portable EXE using the instructions below.
+The portable EXE matches the current source release. You can also run from source or build the EXE using the instructions below.
 
 ![MiniMax H3 Prompt Studio three-column workspace](docs/screenshots/workspace-en.png)
 
@@ -44,7 +44,7 @@ The published EXE is older than the current source. To use the latest fixes, run
 
 ### Windows portable build
 
-1. Download [H3PromptStudio-v0.8.4.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe).
+1. Download [H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe).
 2. Start Ollama or another supported AI backend.
 3. Run the EXE. The workspace normally opens at `http://127.0.0.1:8765`.
 4. Open **Settings**, select the backend, enter its address, and test the connection.
@@ -52,10 +52,10 @@ The published EXE is older than the current source. To use the latest fixes, run
 
 The EXE does not include Ollama or any AI model. A vision-capable model is required when using Picture references. The portable build is currently unsigned, so Windows may identify it as an unrecognized application.
 
-SHA-256 for v0.8.4:
+SHA-256 for v0.8.16:
 
 ```text
-93EF96F73BE64288925E2989BAE523EADD5B65D3B09C94F36E25B083279C117D
+7347249E4D49769483F594BA0615380302DA46CA5FC34797A3944AE4C8AC991C
 ```
 
 ### Run from source

@@ -4,11 +4,11 @@
 
 本地优先的 MiniMax H3 桌面提示词工作台。通过本机或局域网 AI 后端生成 T2VA、I2VA、FL2VA、L2VA、Ref2VA 和 Hybrid 提示词，并集中管理图片、视频、声音参考、剧本策划与可复用 Skill。
 
-**当前源码版本：** v0.8.16 · **最新已发布便携版：** v0.8.4 · **平台：** Windows · **界面语言：** English / 简体中文
+**当前源码版本：** v0.8.16 · **最新已发布便携版：** v0.8.16 · **平台：** Windows · **界面语言：** English / 简体中文
 
-[下载 H3PromptStudio-v0.8.4.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.4) · [完整更新日志](CHANGELOG.md)
+[下载 H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [完整更新日志](CHANGELOG.md)
 
-已发布的 EXE 版本早于当前源码；要使用最新修复，请从源码运行，或按下文自行构建便携版。
+已发布的便携版与当前源码版本一致；也可以从源码运行，或按下文自行构建便携版。
 
 ![MiniMax H3 Prompt Studio 三栏工作区](docs/screenshots/workspace-en.png)
 
@@ -44,7 +44,7 @@
 
 ### Windows 便携版
 
-1. 下载 [H3PromptStudio-v0.8.4.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.4/H3PromptStudio-v0.8.4.exe)。
+1. 下载 [H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe)。
 2. 启动 Ollama 或其他受支持的 AI 后端。
 3. 运行 EXE，工作区通常会在 `http://127.0.0.1:8765` 自动打开。
 4. 打开“设置”，选择后端、填写服务地址并测试连接。
@@ -52,10 +52,10 @@
 
 EXE 不包含 Ollama 或任何 AI 模型。使用 Picture 参考时，需要选择支持图片输入的多模态模型。当前便携版未进行代码签名，因此 Windows 可能会把它识别为未知应用。
 
-v0.8.4 SHA-256：
+v0.8.16 SHA-256：
 
 ```text
-93EF96F73BE64288925E2989BAE523EADD5B65D3B09C94F36E25B083279C117D
+7347249E4D49769483F594BA0615380302DA46CA5FC34797A3944AE4C8AC991C
 ```
 
 ### 从源码运行
