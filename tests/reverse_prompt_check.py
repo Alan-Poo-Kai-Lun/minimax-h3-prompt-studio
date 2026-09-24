@@ -66,6 +66,8 @@ assert 'data-reverse-rule="fixed"' in html and 'data-reverse-rule="custom"' in h
 assert "/api/reverse-prompt" in script
 assert "sampleVideo" in script and "toDataURL" in script
 assert "promptMode" in script and "customPrompt" in script
+assert "savedOutputs[kind]=output.value" in script
+assert 'output.value=savedOutputs[kind]||""' in script
 assert "最多 8 张关键帧" in html
 
 print("reverse prompt checks passed")
