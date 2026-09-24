@@ -1,6 +1,6 @@
 (() => {
   const fields = ['width','height','quality','segmentCount','segmentSeconds','language','promptOutputLanguage','customPromptLanguage','scriptOutputLanguage','customScriptLanguage','style','music','sound','negative','temperature','context','audioMode','audioDirection','scriptGenre','scriptAudience','scriptTone'];
-  const keys = ['h3.settings','h3.templates.v2','h3.skills.v1','h3.selectedSkills','h3.layout.v1','h3.defaults.v1'];
+  const keys = ['h3.settings','h3.templates.v2','h3.skills.v1','h3.selectedSkills','h3.layout.v1','h3.defaults.v1','h3.reversePrompts.v1'];
   const box = document.createElement('section');
   box.id = 'backupControls';
   box.innerHTML = '<hr><p id="backupHelp"></p><label class="setting-check"><input type="checkbox" id="backupSecrets"><span id="backupSecretsLabel"></span></label><div class="dialog-actions"><button type="button" class="ghost" id="exportAll"></button><label class="ghost import-label"><span id="importAllLabel"></span><input id="importAll" type="file" accept="application/json,.json"></label></div>';
@@ -17,7 +17,7 @@
   function makeBackup(includeSecrets=false) {
     const saved = {...settings,language:uiLang,theme:colorTheme};
     if(!includeSecrets)delete saved.apiKey;
-    return {format:'h3-studio-backup',version:1,createdAt:new Date().toISOString(),settings:saved,templates:allTemplates(),skills:allSkills(),selectedSkillIds:[...selectedSkillIds],layout:JSON.parse(localStorage.getItem('h3.layout.v1')||'null'),defaults:defaults()};
+    return {format:'h3-studio-backup',version:1,createdAt:new Date().toISOString(),settings:saved,templates:allTemplates(),skills:allSkills(),selectedSkillIds:[...selectedSkillIds],reversePrompts:JSON.parse(localStorage.getItem('h3.reversePrompts.v1')||'[]'),layout:JSON.parse(localStorage.getItem('h3.layout.v1')||'null'),defaults:defaults()};
   }
   function validateBackup(data) {
     const object=x=>x && typeof x==='object' && !Array.isArray(x);
@@ -32,6 +32,8 @@
       }
     }
     if(!Array.isArray(data.selectedSkillIds)||data.selectedSkillIds.some(id=>typeof id!=='string'||!data.skills.some(s=>s.id===id))||data.selectedSkillIds.length>3)throw Error('Invalid selected Skills / 已选技能无效');
+    if(data.reversePrompts===undefined)data.reversePrompts=JSON.parse(localStorage.getItem('h3.reversePrompts.v1')||'[]');
+    if(!Array.isArray(data.reversePrompts)||data.reversePrompts.length>100||data.reversePrompts.some(row=>!object(row)||typeof row.id!=='string'||!row.id||!['image','video'].includes(row.kind)||typeof row.name!=='string'||!row.name||typeof row.prompt!=='string'||!row.prompt||row.prompt.length>12000))throw Error('Invalid reverse prompts / 反推提示词无效');
     if(!['T2VA','I2VA','FL2VA','L2VA','Ref2VA','Hybrid'].includes(data.defaults.mode)||!['1:1','2:3','3:2','3:4','4:3','9:16','16:9','21:9'].includes(data.defaults.aspectRatio))throw Error('Invalid generation defaults / 生成参数无效');
     for(const id of fields) {
       const val=data.defaults.fields[id],el=document.getElementById(id);
@@ -66,7 +68,7 @@
     const old=Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)]));
     const allowed=['backend','baseUrl','ollamaUrl','backendUrls','apiKey','lastModel','language','theme','autoUnload'];
     const imported=Object.fromEntries(allowed.filter(k=>data.settings[k]!==undefined).map(k=>[k,data.settings[k]]));
-    const values={'h3.settings':{...settings,...imported},'h3.templates.v2':templates.merged,'h3.skills.v1':skills.merged,'h3.selectedSkills':data.selectedSkillIds.map(id=>skills.map.get(id)),'h3.layout.v1':data.layout,'h3.defaults.v1':data.defaults};
+    const values={'h3.settings':{...settings,...imported},'h3.templates.v2':templates.merged,'h3.skills.v1':skills.merged,'h3.selectedSkills':data.selectedSkillIds.map(id=>skills.map.get(id)),'h3.layout.v1':data.layout,'h3.defaults.v1':data.defaults,'h3.reversePrompts.v1':data.reversePrompts};
     try {
       localStorage.setItem('h3.backup.beforeImport.v1',JSON.stringify(old));
       for(const k of keys)localStorage.setItem(k,JSON.stringify(values[k]));

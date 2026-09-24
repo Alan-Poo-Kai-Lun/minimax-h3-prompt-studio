@@ -60,6 +60,7 @@ else:
 
 html = (ROOT / "web" / "index.html").read_text(encoding="utf-8")
 script = (ROOT / "web" / "reverse.js").read_text(encoding="utf-8")
+presets_script = (ROOT / "web" / "reverse-presets.js").read_text(encoding="utf-8")
 assert 'data-workflow="reverse"' in html and 'id="reverseWorkflow"' in html
 assert 'id="reverseDialog"' not in html and 'id="reverseBtn"' not in html
 assert 'data-reverse-rule="fixed"' in html and 'data-reverse-rule="custom"' in html
@@ -68,6 +69,9 @@ assert "sampleVideo" in script and "toDataURL" in script
 assert "promptMode" in script and "customPrompt" in script
 assert "savedOutputs[kind]=output.value" in script
 assert 'output.value=savedOutputs[kind]||""' in script
+assert "h3.reversePrompts.v1" in presets_script
+assert "专业图片反推" in presets_script and "专业视频拉片反推" in presets_script
+assert "saveReversePreset" in presets_script and "deleteReversePreset" in presets_script
 assert "最多 8 张关键帧" in html
 
 print("reverse prompt checks passed")

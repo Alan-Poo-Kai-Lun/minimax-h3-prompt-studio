@@ -14,6 +14,8 @@ with sync_playwright() as p, tempfile.TemporaryDirectory() as folder:
     errors=[]
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.goto(url,wait_until='networkidle')
+    backup=page.evaluate('window.H3Backup.makeBackup(false)')
+    assert len(backup['reversePrompts'])>=2
     page.locator('#templateBtn').click()
     page.locator('#templateName').fill('QA template')
     page.locator('#templateIdea').fill('QA complete creative brief')
