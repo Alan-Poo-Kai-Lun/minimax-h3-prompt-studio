@@ -33,6 +33,24 @@ assert "12.40 seconds" in video_prompt
 assert "MiniMax H3-ready" in video_prompt
 assert "do not claim" in video_prompt.lower() and "original audio" in video_prompt.lower()
 
+custom_prompt = SERVER.build_reverse_prompt({
+    "kind": "image",
+    "promptMode": "custom",
+    "language": "zh",
+    "filename": "custom.png",
+    "customPrompt": "只输出三行：主体、灯光、镜头。",
+    "images": ["unused"],
+})
+assert "只输出三行：主体、灯光、镜头。" in custom_prompt
+assert "Positive prompt" not in custom_prompt and "Negative prompt" not in custom_prompt
+
+try:
+    SERVER.build_reverse_prompt({"kind": "image", "promptMode": "custom", "customPrompt": ""})
+except ValueError:
+    pass
+else:
+    raise AssertionError("Empty custom reverse instruction must be rejected")
+
 try:
     SERVER.build_reverse_prompt({"kind": "audio", "language": "zh"})
 except ValueError:
@@ -42,9 +60,12 @@ else:
 
 html = (ROOT / "web" / "index.html").read_text(encoding="utf-8")
 script = (ROOT / "web" / "reverse.js").read_text(encoding="utf-8")
-assert 'id="reverseBtn"' in html and 'id="reverseDialog"' in html
+assert 'data-workflow="reverse"' in html and 'id="reverseWorkflow"' in html
+assert 'id="reverseDialog"' not in html and 'id="reverseBtn"' not in html
+assert 'data-reverse-rule="fixed"' in html and 'data-reverse-rule="custom"' in html
 assert "/api/reverse-prompt" in script
 assert "sampleVideo" in script and "toDataURL" in script
+assert "promptMode" in script and "customPrompt" in script
 assert "最多 8 张关键帧" in html
 
 print("reverse prompt checks passed")

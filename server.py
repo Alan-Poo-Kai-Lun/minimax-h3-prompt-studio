@@ -1494,15 +1494,41 @@ Describe only observable or strongly supported details. Never identify a real pe
 
 def build_reverse_prompt(data: dict) -> str:
     kind = str(data.get("kind", "image")).strip().lower()
+    prompt_mode = str(data.get("promptMode", "fixed")).strip().lower()
     language = str(data.get("language", "zh")).strip().lower()
     target = str(data.get("target", "h3")).strip().lower()
     instruction = str(data.get("instruction", "")).strip()
     filename = str(data.get("filename", "reference media")).strip()[:240]
     if kind not in {"image", "video"}:
         raise ValueError("Reverse mode must be image or video.")
+    if prompt_mode not in {"fixed", "custom"}:
+        raise ValueError("Reverse prompt mode must be fixed or custom.")
     if language not in {"zh", "en"}:
         raise ValueError("Reverse prompt language must be Chinese or English.")
     output_language = "Simplified Chinese" if language == "zh" else "English"
+    if prompt_mode == "custom":
+        custom_prompt = str(data.get("customPrompt", "")).strip()
+        if not custom_prompt:
+            raise ValueError("Custom reverse instruction is required.")
+        if len(custom_prompt) > 12000:
+            raise ValueError("Custom reverse instruction exceeds 12000 characters.")
+        media_context = f"one supplied image named {filename}"
+        if kind == "video":
+            try:
+                duration = max(0.0, float(data.get("duration", 0)))
+            except (TypeError, ValueError):
+                duration = 0.0
+            frame_count = len(data.get("images", []))
+            duration_text = f"{duration:.2f} seconds" if duration else "unknown duration"
+            media_context = f"{frame_count} chronological frames sampled evenly from {filename}, source duration {duration_text}"
+        return f"""Follow the user's custom reverse-engineering instruction using {media_context} as visual evidence.
+Output language: {output_language}.
+Media type: {kind}.
+
+User's custom instruction:
+{custom_prompt}
+
+Honor the requested structure and priorities. Describe only observable or strongly supported details. Do not identify real people, infer sensitive traits, invent unreadable text, or mention the analysis process. For video, the original audio was not analyzed; only describe sound when the custom instruction requests suitable generation direction."""
     extra = instruction if instruction else "No extra requirement."
     if kind == "image":
         return f"""Reverse-engineer the supplied image into one reusable image-generation prompt.
