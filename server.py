@@ -20,7 +20,7 @@ ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
 DEFAULT_OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("H3_TOOL_PORT", "8765"))
-APP_VERSION = "0.8.16"
+APP_VERSION = "0.8.17"
 
 MODE_RULES = {
     "T2VA": "No reference images. Build the complete audiovisual timeline from text.",
@@ -1488,6 +1488,56 @@ def extract_model_text(result: dict) -> str:
     return str(message.get("thinking") or result.get("response") or "").strip()
 
 
+REVERSE_PROMPT_SYSTEM = """You reverse-engineer visual media into production-ready generation prompts.
+Describe only observable or strongly supported details. Never identify a real person, infer sensitive traits, or invent text that is not legible. Preserve subject appearance, environment, composition, lighting, lens language, style, motion, camera behavior, chronology, and visible continuity. Return only the requested prompt, without analysis, confidence notes, Markdown fences, or a preamble."""
+
+
+def build_reverse_prompt(data: dict) -> str:
+    kind = str(data.get("kind", "image")).strip().lower()
+    language = str(data.get("language", "zh")).strip().lower()
+    target = str(data.get("target", "h3")).strip().lower()
+    instruction = str(data.get("instruction", "")).strip()
+    filename = str(data.get("filename", "reference media")).strip()[:240]
+    if kind not in {"image", "video"}:
+        raise ValueError("Reverse mode must be image or video.")
+    if language not in {"zh", "en"}:
+        raise ValueError("Reverse prompt language must be Chinese or English.")
+    output_language = "Simplified Chinese" if language == "zh" else "English"
+    extra = instruction if instruction else "No extra requirement."
+    if kind == "image":
+        return f"""Reverse-engineer the supplied image into one reusable image-generation prompt.
+Output language: {output_language}.
+Source filename: {filename}.
+User emphasis: {extra}
+
+Write two clearly labeled parts in the selected language:
+1. Positive prompt: a cohesive, copy-ready prompt covering subject, appearance, pose/action, environment, composition, camera/lens, lighting, color, material, atmosphere, style, and fine details.
+2. Negative prompt: only likely failure modes relevant to this image.
+
+Do not mention that an image was analyzed. Do not add unsupported brands, names, identities, or unreadable text."""
+    try:
+        duration = max(0.0, float(data.get("duration", 0)))
+    except (TypeError, ValueError):
+        duration = 0.0
+    frame_count = len(data.get("images", []))
+    format_rule = (
+        "Write a MiniMax H3-ready video prompt with a chronological visual description, explicit camera movement, subject motion, continuity, overall_soundscape, and non_diegetic_music. Keep it as one copy-ready prompt; do not invent H3 reference labels."
+        if target == "h3"
+        else "Write one platform-neutral, copy-ready video-generation prompt with chronological action, camera, motion, continuity, visual style, sound effects, and music direction."
+    )
+    duration_text = f"{duration:.2f} seconds" if duration else "unknown"
+    return f"""The supplied images are {frame_count} chronological keyframes sampled evenly from one video.
+Reverse-engineer the visible video into a prompt that can recreate the same sequence.
+Output language: {output_language}.
+Target format: {target}.
+Source filename: {filename}.
+Source duration: {duration_text}.
+User emphasis: {extra}
+
+{format_rule}
+Describe only visual evidence from the sampled frames. Infer transitions conservatively. Do not claim to hear, transcribe, or analyze the original audio; sound and music must be phrased as suitable generation direction. Do not mention keyframe extraction or the analysis process."""
+
+
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT / "web"), **kwargs)
@@ -1681,6 +1731,66 @@ class Handler(SimpleHTTPRequestHandler):
                 json_response(self, 502, {"error": f"AI backend returned HTTP {exc.code}: {detail}"})
             except Exception as exc:
                 json_response(self, 500, {"error": str(exc)})
+            return
+        if parsed.path == "/api/reverse-prompt":
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if length <= 0 or length > 24 * 1024 * 1024:
+                    raise ValueError("Reverse request is empty or exceeds the 24 MB limit.")
+                data = json.loads(self.rfile.read(length).decode("utf-8"))
+                model = str(data.get("model", "")).strip()
+                if not model:
+                    raise ValueError("Select a vision-capable AI model.")
+                images = data.get("images", [])
+                kind = str(data.get("kind", "image")).strip().lower()
+                if not isinstance(images, list) or not images:
+                    raise ValueError("Add an image or video before reverse prompting.")
+                expected_max = 1 if kind == "image" else 8
+                if len(images) > expected_max:
+                    raise ValueError(f"{kind.title()} reverse prompting accepts at most {expected_max} image frame(s).")
+                normalized_images = [normalize_data_url(image) for image in images]
+                backend = str(data.get("backend", "ollama"))
+                base_url = normalize_api_url(data.get("baseUrl") or data.get("ollamaUrl"), backend)
+                api_key = str(data.get("apiKey", ""))
+                prompt_text = build_reverse_prompt(data)
+                messages = [
+                    {"role": "system", "content": REVERSE_PROMPT_SYSTEM},
+                    {"role": "user", "content": prompt_text, "images": normalized_images},
+                ]
+                if backend == "ollama":
+                    request_payload = {
+                        "model": model,
+                        "messages": messages,
+                        "stream": False,
+                        "think": False,
+                        "options": {
+                            "temperature": min(0.35, max(0.0, float(data.get("temperature", 0.25)))),
+                            "num_ctx": int(data.get("context", 32768)),
+                        },
+                    }
+                    result = ollama_request("/api/chat", request_payload, base_url=base_url)
+                else:
+                    user_content = [{"type": "text", "text": prompt_text}]
+                    user_content.extend({"type": "image_url", "image_url": {"url": image}} for image in images)
+                    request_payload = {
+                        "model": model,
+                        "messages": [
+                            {"role": "system", "content": REVERSE_PROMPT_SYSTEM},
+                            {"role": "user", "content": user_content},
+                        ],
+                        "stream": False,
+                        "temperature": min(0.35, max(0.0, float(data.get("temperature", 0.25)))),
+                    }
+                    result = api_request("/chat/completions", request_payload, base_url, api_key)
+                output = extract_model_text(result)
+                if not output:
+                    raise ValueError("The AI backend returned an empty reverse prompt.")
+                json_response(self, 200, {"output": output, "kind": kind, "frameCount": len(images)})
+            except urllib.error.HTTPError as exc:
+                detail = exc.read().decode("utf-8", errors="replace")
+                json_response(self, 502, {"error": f"AI backend returned HTTP {exc.code}: {detail}"})
+            except Exception as exc:
+                json_response(self, 400 if isinstance(exc, (ValueError, json.JSONDecodeError)) else 500, {"error": str(exc)})
             return
         if parsed.path not in {"/api/generate", "/api/generate-stream", "/api/script-stream", "/api/rewrite-segment"}:
             json_response(self, 404, {"error": "Not found"})

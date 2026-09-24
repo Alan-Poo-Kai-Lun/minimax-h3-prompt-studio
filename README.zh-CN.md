@@ -4,7 +4,7 @@
 
 本地优先的 MiniMax H3 桌面提示词工作台。通过本机或局域网 AI 后端生成 T2VA、I2VA、FL2VA、L2VA、Ref2VA 和 Hybrid 提示词，并集中管理图片、视频、声音参考、剧本策划与可复用 Skill。
 
-**当前源码版本：** v0.8.16 · **最新已发布便携版：** v0.8.16 · **平台：** Windows · **界面语言：** English / 简体中文
+**当前源码版本：** v0.8.17 · **最新已发布便携版：** v0.8.16 · **平台：** Windows · **界面语言：** English / 简体中文
 
 [下载 H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [完整更新日志](CHANGELOG.md)
 
@@ -15,6 +15,7 @@
 ## 主要功能
 
 - 桌面三栏工作区：左侧提示词与剧本，中间生成设置与参考素材，右侧生成结果
+- 支持反推图片提示词，或从本地抽取的视频关键帧反推 H3／通用视频提示词
 - 支持拖动分隔线调整栏宽、单栏专注、自动恢复上次布局，并优化 1366 像素宽度显示
 - 直接提示词与“创意内容 → 分段剧本 → 人工确认 → H3 提示词”两种工作流
 - T2VA、I2VA、FL2VA、L2VA、Ref2VA 和灵活的 Hybrid 模式
@@ -106,10 +107,10 @@ Hybrid 可以使用任意有效的 Picture、Video、Audio 组合，不再强制
 
 ```powershell
 python -m pip install -r requirements-build.txt
-python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.16.spec
+python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.17.spec
 ```
 
-生成文件位于 `dist/H3PromptStudio-v0.8.16.exe`。构建目录和发布 EXE 不进入 Git 历史。
+生成文件位于 `dist/H3PromptStudio-v0.8.17.exe`。构建目录和发布 EXE 不进入 Git 历史。
 
 ## 常见问题
 

@@ -15,6 +15,7 @@ H3PromptStudio-Hybrid-v*.spec
 H3PromptStudio.spec
 !H3PromptStudio-v0.6.1.spec
 !H3PromptStudio-v0.8.16.spec
+!H3PromptStudio-v0.8.17.spec
 
 # Editors and operating-system files
 .vscode/
