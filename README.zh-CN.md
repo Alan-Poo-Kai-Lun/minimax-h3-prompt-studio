@@ -6,7 +6,7 @@
 
 **当前源码版本：** v0.8.18 · **最新已发布便携版：** v0.8.16 · **平台：** Windows · **界面语言：** English / 简体中文
 
-[下载 H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [完整更新日志](CHANGELOG.md)
+[下载 H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [发布说明](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [完整更新日志](CHANGELOG.zh-CN.md)
 
 已发布的便携版与当前源码版本一致；也可以从源码运行，或按下文自行构建便携版。
 

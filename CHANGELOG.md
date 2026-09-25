@@ -1,377 +1,288 @@
-# MiniMax H3 Prompt Studio 更新日志
+# MiniMax H3 Prompt Studio Changelog
 
-从最初的本地提示词原型，逐步发展为支持多模态参考、剧本工作流、Hybrid、音频、Skill 扩展及多种本地 AI 后端的 MiniMax H3 提示词工作台。
+**English** | [简体中文](CHANGELOG.zh-CN.md)
+
+MiniMax H3 Prompt Studio has grown from a local prompt prototype into a multimodal H3 workstation with screenplay workflows, Hybrid generation, audio references, reusable Skills, prompt reverse-engineering, and multiple local AI backends.
 
 ## v0.8.18
 
-- 优化长文本输入性能：素材标签与引用高亮改为当前输入框独立、防抖刷新，滚动时不再重建完整文本层。
-- 新增可保存、覆盖、删除和复用的自定义反推提示词，并内置专业图片反推与视频拉片预设。
-- 图片与视频反推结果分别缓存，切换模式不再丢失已有结果。
-- 修复反推工作流中单段改写结束后，主生成按钮可能被错误启用的问题。
-- 自定义反推提示词随一键完整备份导出和恢复。
+- Improved long-text input performance by debouncing reference-chip and mention-highlight updates for the active editor only. Scrolling no longer rebuilds the complete highlight layer.
+- Added reusable custom reverse-prompt instructions that can be saved, overwritten, deleted, and selected later, with built-in professional presets for image analysis and video shot breakdowns.
+- Image and video reverse-engineering results are cached independently, so switching media modes no longer discards previous output.
+- Fixed the main Generate button being incorrectly enabled after a targeted segment rewrite in the reverse workflow.
+- Included saved reverse-prompt instructions in full backup export and restore.
 
 ## v0.8.17
 
-- 新增图片提示词反推：由当前多模态模型还原主体、构图、镜头、光线、材质、风格和针对性负面提示词。
-- 新增视频提示词反推：浏览器在本地均匀抽取最多 8 张关键帧，可输出 MiniMax H3 或通用视频模型提示词。
-- 反推结果支持中英文、额外侧重点、预览、复制和 TXT 下载；明确标示视频反推不会读取或转录原音轨。
-- 反推素材只发送到用户配置的 AI 后端，并复用现有模型、地址、API Key、温度和上下文设置。
+- Added image prompt reverse-engineering for subjects, composition, camera, lighting, materials, style, and targeted negative prompts.
+- Added video prompt reverse-engineering. The browser samples up to eight keyframes locally and can produce MiniMax H3 or generic video-model prompts.
+- Reverse results support Chinese or English output, optional emphasis, preview, copy, and TXT download. Video analysis explicitly does not read or transcribe the original audio track.
+- Reverse media is sent only to the AI backend configured by the user and reuses the existing model, endpoint, API key, temperature, and context settings.
 
 ## v0.8.16
 
-- 修复重复字段或空字段可能绕过结构检查、在规范化阶段报错的问题；先验收原始输出再自动补全。
-- 同步源码构建脚本和双语 README，明确区分当前源码版本与已发布的便携版。
+- Fixed duplicate or empty H3 fields bypassing structural validation and failing during normalization. Raw output is now validated before automatic repair.
+- Updated source build instructions and both README files to distinguish the current source version from the latest published portable release.
 
 ## v0.8.15
 
-- 多段 H3 输出缺少字段、段落或 `[Shot 1]` 时自动修复完整结果，不再在插入对白阶段直接清空输出。
-- 自动修复最多重试两次，并继续锁定批准剧本中的对白、素材编号、段数和时长。
-- 修复仍失败时保留模型原始输出供检查，同时明确标记生成失败。
+- Automatically repairs complete multi-segment H3 output when fields, segments, or `[Shot 1]` are missing instead of clearing the result during dialogue insertion.
+- Repair retries up to twice while preserving approved screenplay dialogue, media labels, segment count, and timing.
+- If repair still fails, the raw model output remains visible for inspection and the generation is clearly marked as failed.
 
 ## v0.8.14
 
-- 自定义 H3 输出语言新增最终结果检查，检测未翻译的说明文字并自动修复。
-- 语言修复期间锁定 H3 字段、素材编号、镜头号、时间码、关系标记和原始对白。
-- 修复结果仍混合语言或破坏 H3 结构时拒绝采用，不再把有问题的结果保存为成功生成。
+- Added final custom-language validation for H3 output and automatic repair of untranslated prose.
+- Language repair locks H3 field names, media labels, shot numbers, timestamps, relationship markers, and original dialogue.
+- Rejects repairs that remain mixed-language or damage the H3 structure instead of saving them as successful output.
 
 ## v0.8.13
 
-- 修复自定义语言剧本仍夹杂英文描述的问题；会逐行检查 `reference_plan`、`story_goal`、`scene`、`visual_action`、`camera_intent`、`sound` 与转场等内容。
-- 首次翻译残留英文时自动进行一次完整重译；第二次仍不合格则拒绝采用并保留英文母版。
-- H3 提示词输出语言新增“自定义语言”及独立输入框，不再只有 English、中文与跟随输入。
-- 从双语剧本的自定义版本确认转换时，自动选择相同的 H3 自定义输出语言，用户仍可手动更改。
-- 自定义 H3 语言随项目和完整设定备份保存，并兼容旧版备份。
+- Fixed custom-language screenplays that still contained English descriptions by checking `reference_plan`, `story_goal`, `scene`, `visual_action`, `camera_intent`, `sound`, transitions, and other prose line by line.
+- Automatically retries one complete translation when English residue is detected; a second invalid result is rejected while the English master remains safe.
+- Added an independent custom-language option and language-name field for H3 prompt output.
+- Confirming a custom-language screenplay automatically selects the same H3 output language while still allowing manual changes.
+- Custom H3 language settings are preserved in projects and full backups, with backward compatibility for older backups.
 
 ## v0.8.12
 
-- 剧本输出语言新增“English + 自定义”双语模式，可输入 Bahasa Melayu、日本語、ไทย 等语言名称。
-- 先生成唯一英文母版，再严格翻译为自定义语言，避免两个模型调用各写一套不同剧情。
-- 英文母版设为只读对照；自定义语言版本可继续编辑、检查剧情及转换为 H3 提示词。
-- 翻译结果必须保持相同段落编号、字段名、时长、时间轴、Picture/Video/Audio 编号与逐字对白，否则拒绝保存。
-- 支持双语切换、复制双语、下载双语；项目保存、载入及完整设定备份会保留两份剧本和自定义语言。
-- 旧版完整设定备份仍可导入，不要求补写新字段。
+- Added an “English + custom language” bilingual screenplay mode supporting language names such as Bahasa Melayu, Japanese, and Thai.
+- Generates one canonical English master, then translates it strictly to avoid two model calls creating different stories.
+- The English master is read-only for comparison; the custom-language version remains editable and drives story review and H3 conversion.
+- Translation must preserve segment numbers, field names, timing, timelines, Picture/Video/Audio labels, and verbatim dialogue or it is rejected.
+- Added bilingual switching, copying, and downloading. Projects and full backups retain both versions and the selected custom language.
+- Older full backups remain importable without the new fields.
 
 ## v0.8.11
 
-- 剧情建议修正版新增大型左右对比窗口，按行及改写范围高亮，支持同步滚动、修改导航和编辑后重新计算差异。
-- 原稿已变化时禁止采用过期建议，原文不会自动覆盖。
-- 结果区支持保存所选段的手动编辑、按修改要求仅重写本段，以及撤销最近修改。
-- 单段重写保留其他段原文、对白和原说话人编号；模型返回错误段号、多个段或缺少字段时拒绝应用。
-- 取消、失败与切换项目不会覆盖旧结果；项目保存、复制和下载使用更新后的结果。
-- 本轮不加入种子控制。
+- Added a large side-by-side screenplay comparison with line and changed-range highlighting, synchronized scrolling, change navigation, and editable revisions.
+- Prevents applying stale suggestions after the original screenplay has changed; the original is never overwritten automatically.
+- Added manual segment editing, targeted rewrite instructions for one selected segment, and undo for the latest change.
+- Targeted rewrites preserve all untouched segments, original dialogue, and speaker labels; wrong segment numbers, multiple segments, or missing fields are rejected.
+- Cancellation, failure, and project switching do not overwrite the previous result. Save, copy, and download use the updated result.
 
 ## v0.8.10
 
-- 修复模板只写入直接提示词、在剧本工作流中看不到应用结果的问题；应用后关闭资料库并定位输入框。
-- 新模板不再继续锁定不对应的旧剧本；保留原剧本草稿，不自动删除。
-- 设置窗口新增一键导出／导入全部模板、技能、已选技能、设置、生成参数和三栏布局。
-- 导入先校验并确认，资料库冲突保留两份，重复导入不重复添加，写入失败回滚。
-- API Key 默认排除，可显式勾选包含敏感信息；项目、历史和媒体仍使用独立项目备份。
-- 新增浏览器恢复测试，并核实已选技能规则会进入脚本与 H3 生成请求。
+- Fixed templates applying only to Direct Prompt. Templates now apply visibly to the active workflow and focus the correct input.
+- Applying a new template no longer keeps an unrelated approved screenplay locked; screenplay drafts are preserved rather than deleted.
+- Added one-click export and import for templates, Skills, selected Skills, settings, generation parameters, and three-column layout.
+- Imports are validated and confirmed first, library conflicts keep both records, repeated imports are deduplicated, and write failures roll back.
+- API keys are excluded by default and can be included explicitly. Projects, history, and media remain separate project backups.
+- Added browser restore tests and verified that selected Skill rules enter both screenplay and H3 generation requests.
 
 ## v0.8.9
 
-- 对白支持单引号、中文引号及无引号格式；无法解析的内容会明确报错，不再静默丢失。
-- 无对白段清除模型额外对白；角色别名只有明确映射同一参考人物时才统一编号。
-- 自定义角色对白处理保证幂等，消除残留说话人句子与累积空行。
-- 声景音乐清理保留混合音效，模糊描述保留并提示人工检查。
-- 时长检查支持分钟、时钟格式及未分段原稿时间线终点。
-- 新增边界回归测试，覆盖全部六类自检问题。
+- Added support for single-quoted, Chinese-quoted, and unquoted dialogue. Unparseable dialogue now reports an explicit error instead of being silently lost.
+- Removes model-invented dialogue from silent segments and unifies character aliases only when they clearly identify the same reference person.
+- Made custom-speaker processing idempotent, removing leftover speaker text and accumulating blank lines.
+- Preserves mixed sound effects while cleaning music clauses and flags ambiguous descriptions for review.
+- Timing checks now support minutes, clock notation, and timeline endpoints in unsegmented source scripts.
+- Added edge-case regression coverage for all six self-check categories.
 
 ## v0.8.8
 
-- 对白按原剧本时间插回对应镜头，不再集中附加在段落末尾；同一角色跨镜头与跨段保持稳定的 S1/S2 编号。
-- 品牌旁白与画外音改为离屏播报，不再错误要求画面人物进行口型同步。
-- 按素材类型校正 `retention_analysis`：Picture/Video 仅使用视觉关系标记，Audio 使用音频关系标记，并按实际镜头引用生成范围。
-- 背景音乐只保留在 `non_diegetic_music`，自动从 `overall_soundscape` 去除重复的 BGM 描述。
-- 新增源剧本与生成设置的时长冲突检查；例如原稿总长 30 秒但设置为 3×15 秒时会停止转换并提示修正。
-- 新增完整广告剧本回归测试，覆盖对白时间落位、说话人编号、旁白、素材关系、音乐分离和时长冲突。
+- Approved dialogue is restored to the matching shot time instead of being appended to the end of a segment; speaker IDs remain stable across shots and segments.
+- Brand voiceovers and off-screen lines are marked as off-screen narration rather than requiring visible lip synchronization.
+- Corrected `retention_analysis` by media type: Picture/Video use visual relationship markers and Audio uses audio relationship markers, scoped to actual shot references.
+- Background music appears only in `non_diegetic_music` and is removed from duplicate `overall_soundscape` descriptions.
+- Added a source-script versus generation-duration check, preventing conversions such as a 30-second source configured as 3 × 15 seconds.
+- Added a full advertising screenplay regression test for timing, speakers, narration, media relationships, music separation, and duration conflicts.
 
 ## v0.8.7
 
-- 确认剧本成为最终 H3 转换的唯一剧情依据，禁止模型添加未经确认的剧情、对白、思想气泡、标语、道具或产品宣传。
-- 对白语言说明统一规范为 H3 英文标签，例如“马来语对白（地道马来西亚口语）”会输出为 `[Malay]`。
-- 删除模型生成的改写、重复或额外对白，再按对应 Segment、说话者及原句重新插入一次。
-- 自动把简写或错误的 `retention_analysis` 修正为包含镜头范围、固定关系标记与说明的标准格式。
+- The approved screenplay is now the only story source for final H3 conversion. The model may not invent plot beats, dialogue, thought bubbles, slogans, props, or product claims.
+- Dialogue-language descriptions are normalized to H3 English labels, for example Malaysian colloquial Malay becomes `[Malay]`.
+- Generated rewrites, duplicates, and extra dialogue are removed before restoring the exact approved sentence once in the correct segment and speaker.
+- Automatically normalizes abbreviated or invalid `retention_analysis` into shot ranges, fixed relationship markers, and descriptions.
 
 ## v0.8.6
 
-- 修复已确认剧本中的对白在转换为最终 H3 提示词时可能被本地模型遗漏的问题。
-- 转换前按 Segment 提取对白，建立强制对白清单并保留原语言、原句和说话者。
-- 生成后再次验证 `<d>[Language] exact words</d>`；遗漏或改写的对白会自动补入对应段落。
-- 对有对白的段落明确要求说话者出镜并保持可见、同步的口型。
-- 结果状态会显示自动补回的对白数量。
+- Fixed approved screenplay dialogue being omitted from final H3 prompts.
+- Builds a mandatory per-segment dialogue manifest before conversion, preserving original language, exact wording, and speaker.
+- Post-generation validation restores missing or paraphrased lines as `<d>[Language] exact words</d>` in the correct segment.
+- Segments with dialogue explicitly require the speaker to remain visible with synchronized lip movement.
+- Result status reports how many dialogue lines were restored automatically.
 
 ## v0.8.5
 
-- 剧本工作流新增“剧情检查”，流程扩展为创意、分段剧本、剧情检查、人工确认和 H3 提示词。
-- 本地规则先检查段数与编号、每段时长、不可用的 Picture/Video/Audio 标签、对白密度、缺少转场和高度重复段落。
-- AI 独立审查因果、角色动机、人物/场景/道具连续性、节奏、转场和结尾，并返回评分、问题清单及完整修正版。
-- 剧情检查不会自动覆盖原剧本；用户必须点击“采用修正版”，手动修改原剧本后旧检查会标记为过期。
-- 项目保存、载入、导出和导入会保留剧情检查结果与修正版。
-- 补充剧情检查单元测试、英文界面回归和项目恢复验证。
+- Added Story Check to the screenplay workflow: Creative, Segmented Screenplay, Story Check, Human Approval, and H3 Prompt.
+- Local rules check segment count and numbering, duration, unavailable Picture/Video/Audio labels, dialogue density, missing transitions, and repeated segments.
+- An independent AI review audits causality, motivation, character/scene/prop continuity, pacing, transitions, and ending, returning a score, issue list, and complete revision.
+- Story Check never overwrites the original automatically. Users must choose “Apply revision,” and later manual edits mark the review as outdated.
+- Project save, load, export, and import retain story-review results and revisions.
+- Added Story Check unit tests, English UI regression coverage, and project-restore verification.
 
 ## v0.8.4
 
-- Hybrid 不再强制要求首帧或尾帧；只使用参考图片、Video、Audio，或任意组合都可以生成。
-- 切换到 T2VA、I2VA、FL2VA、L2VA、Ref2VA 或 Hybrid 时不再删除素材；当前模式不适用的素材只会从本次请求中排除。
-- 每个 Video 卡片提供带声音的播放器、时长、分辨率、文件大小和自定义截帧时间。
-- 可从 Video 的任意时间点截取画面作为首帧；已有首帧时更新原 Picture，没有时新增 Picture。
-- 每个 Audio 卡片提供播放器、时长、文件大小和用途说明。
-- 新增真实 WebM/WAV 媒体回归测试，覆盖 0.40 秒截帧、预览元数据和跨模式素材保留。
+- Hybrid no longer requires a first or last frame and can generate from reference images, Video, Audio, or any combination.
+- Switching among T2VA, I2VA, FL2VA, L2VA, Ref2VA, and Hybrid no longer deletes media. Media unused by the active mode is excluded only from the current request.
+- Video cards now include a player with audio, duration, resolution, file size, and a custom frame-capture time.
+- Any video timestamp can be captured as the first frame, replacing the existing first-frame Picture or creating a new Picture.
+- Audio cards now include playback, duration, file size, and purpose.
+- Added real WebM/WAV regression tests for 0.40-second capture, preview metadata, and cross-mode media retention.
 
 ## v0.8.3
 
-- Hybrid 使用参考视频或声音时明确要求首帧关键帧，不再接受只有尾帧的配置。
-- 从其他模式切换到 Hybrid 时，如果没有首帧，会自动把第一张非尾帧图片设为首帧关键帧。
-- 载入旧项目以及先有图片、后添加 Video/Audio 的情况也会自动补正首帧用途。
-- 前端提示、后端校验和 H3 生成约束保持一致。
+- Hybrid originally required a first-frame keyframe when Video or Audio references were used and rejected configurations with only a last frame.
+- Switching to Hybrid automatically promoted the first non-last-frame image when no first frame existed.
+- Old projects and workflows that added Video/Audio after images were also corrected automatically.
+- Frontend guidance, backend validation, and generation constraints were kept consistent. This restriction was relaxed in v0.8.4.
 
 ## v0.8.2
 
-- `@` 素材菜单统一支持 Picture、Video 与 Audio，三类素材保持独立编号。
-- 直接提示词和剧本输入都可插入并高亮 `<Video N>`、`<Audio N>`；点击标签可定位对应素材。
-- 视频与声音上传区支持选择或拖入文件，并提供类型过滤与拖入高亮反馈。
-- 快速引用区升级为素材引用区，图片、视频、声音上传后会立即同步显示。
+- Unified the `@` media menu for independently numbered Picture, Video, and Audio references.
+- Direct Prompt and Script inputs can insert and highlight `<Video N>` and `<Audio N>` labels, and clicking a chip locates the corresponding media.
+- Video and audio upload areas support file selection, drag and drop, type filtering, and drag feedback.
+- The quick Picture reference bar became a synchronized media reference bar.
 
 ## v0.8.1
 
-- 直接提示词与剧本工作流改为互斥显示，剧本确认后自动进入直接提示词区。
-- Hybrid 增加最多 3 个独立编号的 Video 参考，支持编辑源、续写源、动作运镜和时间结构用途。
-- Video 文件、用途和说明跟随项目保存；生成请求只传递元数据，不上传原始视频到 AI 后端。
-- H3 生成和剧本策划支持 `<Video N>`，并保持 Picture、Video、Audio 独立编号。
-- 三栏步骤顺序修正为 01 创意内容、02 生成模式、03 画面与时间。
+- Direct Prompt and Script Workflow are displayed exclusively; confirming a screenplay automatically enters the Direct Prompt area.
+- Hybrid supports up to three independently numbered Video references for edit source, continuation source, action/camera reference, and temporal structure.
+- Video files, purposes, and descriptions are preserved with the project. Generation sends metadata only, not the source video file, to the AI backend.
+- H3 generation and screenplay planning support `<Video N>` while keeping Picture, Video, and Audio numbering independent.
+- Corrected the three-column sequence to 01 Creative Content, 02 Generation Mode, and 03 Canvas & Timing.
 
 ## v0.8.0
 
-- 补全设置、剧本、技能、模板、参考素材、提示状态等动态区域的中英文切换。
-- 历史、模板和技能管理改为浮层面板，不再挤压三栏工作区。
-- 三个管理面板增加即时搜索、结果数量和 Esc 关闭操作。
-- 增加覆盖主要工作流与动态管理界面的英文回归检查。
+- Completed Chinese and English coverage for settings, screenplay, Skills, templates, references, and dynamic status areas.
+- Converted History, Templates, and Skills into floating panels that no longer compress the three-column workspace.
+- Added instant search, result counts, and Esc-to-close to all three managers.
+- Added English regression checks for primary workflows and dynamic manager interfaces.
 
 ## v0.7.1
 
-- 三栏宽度支持鼠标拖动和键盘方向键调整。
-- 自动保存栏宽与专注状态，重新打开后恢复。
-- 每栏提供专注模式和一键恢复三栏。
-- 优化 1366 宽度下的项目按钮、顶部操作区与模型选择区。
+- Added mouse and keyboard resizing for all three columns.
+- Column widths and focus state are saved and restored automatically.
+- Each column supports focus mode and one-click return to the three-column view.
+- Improved project controls, header actions, and model selection at 1366-pixel width.
 
 ## v0.7.0
 
-- 桌面工作区改为三栏：提示词/剧本、生成设置/参考素材、生成结果。
-- 三栏可独立滚动，长表单不再需要在整页中频繁上下拖动。
-- 较窄窗口自动切换为双栏或单栏布局。
+- Rebuilt the desktop workspace into three columns: Prompt/Screenplay, Generation/References, and Result.
+- Each column scrolls independently, reducing whole-page navigation through long forms.
+- Narrow windows fall back automatically to two-column or single-column layouts.
 
 ## v0.6.1
 
-### 参考图排序与剪贴板
+### Reference ordering and clipboard workflow
 
-- 参考图卡片支持自由拖拽排序。
-- 拖动时显示明确的前后插入位置。
-- 排序后自动同步创意内容、剧本和生成结果中的 `<Picture N>` 编号。
-- 支持通过 `Ctrl+C` 复制选中的参考图。
-- 支持通过 `Ctrl+V` 替换指定 Picture 或添加新参考图。
-- 支持直接粘贴系统截图和剪贴板图片。
-- 增加“剪贴板目标”状态，降低替换错误图片的风险。
-- 优化参考图选择、高亮、编号和操作提示。
+- Reference cards can be freely reordered with clear before/after drop positions.
+- Reordering synchronizes `<Picture N>` labels in creative content, screenplay, and generated output.
+- `Ctrl+C` copies the selected reference image, while `Ctrl+V` replaces the selected Picture or creates a new one.
+- System screenshots and clipboard images can be pasted directly.
+- Added an explicit clipboard target state to reduce accidental image replacement.
+- Improved Picture selection, highlighting, numbering, and operation feedback.
 
 ## v0.6.0
 
-### 创意增强 Skill 系统
+### Creative enhancement Skill system
 
-- 新增可自行管理的创意增强 Skill 库。
-- 支持导入本地 `SKILL.md` 文件。
-- 支持新增、编辑、删除、选择和保存 Skill。
-- 最多可同时选择三个创意增强 Skill。
-- Skill 选择会随项目保存和导出。
-- 内置以下 H3 适配技能：
-  - `abstract-expression-video-prompter`
-  - `brand-promo-video-generator`
-  - `paper-collage-explainer-generator`
-- 自定义 Skill 只增强创意、动作、视觉、节奏和声音设计。
-- `h3-prompt-writing` 格式规则始终保持最高优先级。
-- 阻止导入 Skill 覆盖 H3 模式、Picture 编号、分段和标准字段结构。
-- 增加 Skill 内容检查和说明编辑功能。
+- Added a user-managed creative Skill library with local `SKILL.md` import, create, edit, delete, select, and save operations.
+- Up to three creative enhancement Skills can be active and are retained by project save/export.
+- Bundled H3-compatible Skills: `abstract-expression-video-prompter`, `brand-promo-video-generator`, and `paper-collage-explainer-generator`.
+- Custom Skills may enhance ideas, action, visuals, rhythm, and sound design only; `h3-prompt-writing` format rules remain highest priority.
+- Prevents imported Skills from overriding H3 mode, Picture numbering, segmentation, or standard field structure.
+- Added Skill-content validation and editable descriptions.
 
 ## v0.5.8
 
-### H3 标准格式修正
+### H3 standard format corrections
 
-- 生成结果严格对齐 `h3-prompt-writing` 技能规范。
-- Ref2VA 固定使用以下标准结构：
-  - `subject_definitions`
-  - `summary`
-  - `retention_analysis`
-  - `detailed_description`
-  - `overall_soundscape`
-  - `non_diegetic_music`
-- 修正 `<Picture N>` 与 `<Subject N>` 的引用关系。
-- 修正 Ref2VA 摘要前缀与参考保留关系。
-- 修正 Shot 标签和时间码格式。
-- 增加常见格式错误的自动规范处理。
-- H3 提示词默认改为标准英文输出。
-- 中文保留为可手动选择的翻译输出模式。
+- Aligned Ref2VA output with `h3-prompt-writing`: `subject_definitions`, `summary`, `retention_analysis`, `detailed_description`, `overall_soundscape`, and `non_diegetic_music`.
+- Corrected `<Picture N>` / `<Subject N>` relationships, summary prefixes, retention markers, Shot labels, and timestamps.
+- Made standard English the default H3 output while keeping Chinese as an optional nonstandard translation.
 
 ## v0.5.7
 
-### 独立语言控制
+### Independent language controls
 
-- 剧本工作流新增“剧本输出语言”选择。
-- 创意内容新增“H3 提示词输出语言”选择。
-- 支持中文、English 和跟随输入语言。
-- 剧本语言、提示词说明语言和角色对白语言可以分别设置。
-- 对白可以使用马来文，同时保留中文剧本或英文 H3 描述。
-- `<Picture N>`、`<Subject N>`、`<Audio N>`、Shot 和时间码等技术标签始终保持标准格式。
+- Added independent screenplay-output and H3 prompt-output language controls with Chinese, English, and Follow Input options.
+- Screenplay language, prompt-description language, and character-dialogue language can be configured separately.
+- Dialogue may remain in Malay while the screenplay is Chinese or the H3 description is English.
+- Technical labels such as `<Picture N>`, `<Subject N>`, `<Audio N>`, Shot, and timestamps retain their standard format.
 
 ## v0.5.3–v0.5.6
 
-### Picture 引用、高亮与预览优化
+### Picture references, highlighting, and preview
 
-- 创意内容和剧本输入支持输入 `@` 搜索参考图。
-- 选择参考图后自动插入标准 `<Picture N>` 标签。
-- 增加 Picture 快速引用标签。
-- 已引用的参考图会显示对应状态。
-- 鼠标悬停 `<Picture N>` 标签时显示图片预览。
-- 点击标签可以打开参考图大图。
-- 支持从下方 Picture 标签再次插入编号。
-- 优化过于强烈的黄色高亮效果。
-- 修正标签、快速引用栏和输入区域对齐问题。
-- 改用更低调、清晰的选中与引用状态。
-- 修复旧版本页面仍显示 `v0.5.0` 的版本缓存问题。
-- 从 v0.5.5 开始使用独占端口机制：
-  - 默认使用 `8765`
-  - 被旧版本占用时自动寻找 `8766–8784`
-  - 避免浏览器连接到仍在后台运行的旧版本
+- Added `@` Picture search, insertion, highlighting, quick chips, hover preview, full-image viewing, and reinsertion from the Picture chip.
+- Added direct system screenshot and clipboard-image paste, plus selected-Picture replacement.
+- Improved selected/reference styling, alignment, and overly strong yellow highlights.
+- Fixed stale visible version labels.
+- Introduced an exclusive port strategy from v0.5.5: use `8765` by default and automatically try `8766–8784` when an older version still owns the port, preventing a browser from reconnecting to an old background process.
 
 ## v0.5.2
 
-### 统一显存释放
+### Unified VRAM release
 
-- 增加统一的 `VRAM` 显存释放按钮。
-- 自动识别当前使用的 AI 后端。
-- 支持卸载 Ollama 当前模型。
-- 支持调用 LM Studio 原生模型卸载接口。
-- 支持通过 llama.cpp Router 卸载模型。
-- 自动释放显存设置适用于当前支持卸载的后端。
-- 对不支持统一卸载的 OpenAI 兼容接口给出明确提示。
-- 卸载模型时不会关闭 AI 服务。
+- Added a unified `VRAM` release button that detects the active AI backend.
+- Supports unloading the current Ollama model, the LM Studio native unload API, and llama.cpp Router unloading.
+- Automatic VRAM release is available for backends that support unloading; unsupported OpenAI-compatible endpoints show a clear explanation.
+- Unloading a model does not stop the AI service.
 
 ## v0.5.1
 
-### Ollama 显存管理
+### Ollama VRAM management
 
-- 新增手动释放 Ollama 模型显存按钮。
-- 支持生成完成后自动卸载当前 Ollama 模型。
-- 减少 Ollama 与 ComfyUI 同时运行时的显存冲突。
-- 下一次生成时允许模型自动重新载入。
+- Added manual Ollama model unloading and an option to unload automatically after generation.
+- Reduces VRAM conflicts when Ollama and ComfyUI run together.
+- The model can load again automatically on the next generation request.
 
 ## v0.5.0
 
-### 多 AI 后端支持
+### Multiple AI backends
 
-- 新增“AI 后端”选择。
-- 支持以下后端：
-  - Ollama
-  - LM Studio
-  - llama.cpp Server
-  - OpenAI 兼容接口
-- 支持自定义服务地址。
-- 支持填写可选 API Key。
-- 增加后端连接测试和模型读取。
-- 增加离线与联网接口隐私提示。
-- 更新日志入口固定在软件左下角。
-- 后续版本以 Windows 便携版作为主要发布格式。
+- Added backend selection for Ollama, LM Studio, llama.cpp Server, and OpenAI-compatible APIs.
+- Added custom endpoint and optional API key support, connection testing, and model discovery.
+- Added clear privacy guidance for offline and online-compatible endpoints.
+- Made the changelog permanently accessible from the lower-left corner.
+- Established the Windows portable build as the primary release format.
 
 ## v0.4.0–v0.4.2
 
-### Hybrid、声音与多媒体参考
+### Hybrid, audio, and multimedia references
 
-- 新增 `HYBRID` 关键帧和参考媒体混合模式。
-- 支持首帧和尾帧关键帧。
-- 支持多张完整参考图片。
-- 新增声音参考文件管理。
-- 支持对应 ComfyUI 的：
-  - `drive_audio`
-  - `ref_audio`
-  - `final_audio`
-- 增加四种音频模式：
-  - `native`
-  - `reference_only`
-  - `lock_source`
-  - `remix_source`
-- 支持设置主音频说明。
-- 剧本输入支持通过 `@` 选择 Picture。
-- 创意内容也支持通过 `@` 选择 Picture。
-- 补齐动态生成区域的英文界面。
-- 改进中英文界面切换。
+- Added `HYBRID` keyframe/reference-media mode, first and last keyframes, multiple full reference images, and audio reference management.
+- Added ComfyUI-compatible `drive_audio`, `ref_audio`, and `final_audio` roles.
+- Added `native`, `reference_only`, `lock_source`, and `remix_source` audio modes plus a primary-audio description.
+- Added `@` Picture selection to screenplay and creative-content inputs.
+- Expanded English coverage for dynamically generated UI and improved language switching.
 
 ## v0.3.0
 
-### 剧本工作流
+### Screenplay workflow
 
-- 新增“直接提示词”和“剧本工作流”双工作模式。
-- 增加四阶段剧本制作流程：
-  1. 创意策划
-  2. 分段剧本
-  3. 人工确认
-  4. 转换为 H3 提示词
-- 支持先生成可编辑剧本，再转换为标准 H3 格式。
-- 支持设置内容类型、目标观众、语言和节奏。
-- 支持指定分段数量和每段秒数。
-- 支持复制及下载完整剧本。
-- 剧本内容和工作流状态可以随项目保存、导入和导出。
+- Added Direct Prompt and Screenplay Workflow modes.
+- Added four screenplay stages: Creative Planning, Segmented Screenplay, Human Approval, and H3 Conversion.
+- Supports editable screenplay generation before conversion to standard H3 structure.
+- Added content type, target audience, language, pacing, segment count, and seconds-per-segment controls.
+- Added complete screenplay copy/download and project persistence for screenplay content and workflow state.
 
 ## v0.2.0
 
-### 完整工作台功能
+### Complete workstation features
 
-- 新增流式生成输出。
-- 支持停止正在进行的生成。
-- 增加本地模型多模态能力检测。
-- 支持参考图片上传和管理。
-- 支持 Picture 编号与人物、产品、场景、风格用途说明。
-- 支持项目新建、保存、导入和导出。
-- 增加生成历史记录。
-- 增加模板管理功能。
-- 模板支持新增、编辑、替换、删除和使用。
-- 支持配置导入与导出。
-- 增加日间和夜间主题。
-- 增加中英文界面切换。
-- 支持自定义 Ollama 地址。
-- 支持分段查看、分段复制、复制全部和下载 TXT。
-- 完成 Windows 便携版打包。
+- Added streaming output, generation cancellation, and local-model multimodal capability detection.
+- Added reference-image upload, Picture numbering, and character/product/scene/style roles.
+- Added project create/save/import/export, generation history, template management, and configuration import/export.
+- Templates support create, edit, replace, delete, and apply.
+- Added light/dark themes, Chinese/English UI, custom Ollama endpoints, segmented result tabs, copy, and TXT download.
+- Completed the Windows portable package.
 
 ## v0.1.0
 
-### H3 基础生成模式
+### Core H3 generation modes
 
-- 建立 MiniMax H3 提示词生成界面。
-- 支持五种基础生成模式：
-  - T2VA
-  - I2VA
-  - FL2VA
-  - L2VA
-  - Ref2VA
-- 支持常用画面比例：
-  - 1:1
-  - 2:3
-  - 3:2
-  - 3:4
-  - 4:3
-  - 9:16
-  - 16:9
-  - 21:9
-- 支持生成宽度和高度设置。
-- 支持分段数量和每段时长设置。
-- 增加不同模式所需参考图的基础校验。
-- 建立本地 Ollama 模型连接和提示词生成流程。
+- Created the MiniMax H3 prompt-generation interface with T2VA, I2VA, FL2VA, L2VA, and Ref2VA.
+- Added 1:1, 2:3, 3:2, 3:4, 4:3, 9:16, 16:9, and 21:9 aspect ratios.
+- Added output width/height, segment count, and seconds-per-segment controls.
+- Added basic reference validation for each mode and the local Ollama model/generation workflow.
 
 ## v0.0.0
 
-### 初始原型
+### Initial prototype
 
-- 完成 MiniMax H3 Prompt Studio 的第一个本地原型。
-- 建立创意内容输入、模型选择和生成结果区域。
-- 验证本地浏览器界面与 Python 服务通信。
-- 验证通过 Ollama 调用本地语言模型生成提示词。
-- 确立“本地优先、参考素材不主动上传互联网”的开发方向。
+- Built the first local MiniMax H3 Prompt Studio prototype with creative input, model selection, and result areas.
+- Verified browser-to-Python service communication and local prompt generation through Ollama.
+- Established the local-first direction: reference media is not proactively uploaded to the internet.
