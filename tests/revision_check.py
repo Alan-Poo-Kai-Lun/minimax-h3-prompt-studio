@@ -116,3 +116,6 @@ with sync_playwright() as p:
     assert not errors,errors
     browser.close()
 print('Comparison highlight and targeted segment editing checks passed')
+
+source=(Path(__file__).resolve().parents[1]/'web'/'revision.js').read_text(encoding='utf-8')
+assert "disabled=workflow!=='direct'" in source

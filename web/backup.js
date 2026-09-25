@@ -11,7 +11,7 @@
     Object.entries(texts).forEach(([id,text]) => { const el=document.getElementById(id); if(el.textContent!==text)el.textContent=text; });
   }
   labels();
-  document.querySelector('.output-panel .eyebrow').textContent='LOCAL GENERATION · V0.8.17';
+  document.querySelector('.output-panel .eyebrow').textContent='LOCAL GENERATION · V0.8.18';
   document.querySelector('#langBtn').addEventListener('click', labels);
   function defaults() {return {mode,aspectRatio:ratio,fields:Object.fromEntries(fields.map(id=>[id,document.getElementById(id).value]))};}
   function makeBackup(includeSecrets=false) {

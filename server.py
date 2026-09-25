@@ -20,7 +20,7 @@ ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
 DEFAULT_OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("H3_TOOL_PORT", "8765"))
-APP_VERSION = "0.8.17"
+APP_VERSION = "0.8.18"
 
 MODE_RULES = {
     "T2VA": "No reference images. Build the complete audiovisual timeline from text.",

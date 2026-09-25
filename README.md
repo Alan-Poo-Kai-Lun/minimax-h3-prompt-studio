@@ -4,7 +4,7 @@
 
 A local-first desktop prompt workbench for MiniMax H3. Build T2VA, I2VA, FL2VA, L2VA, Ref2VA, and Hybrid prompts with visual references, video and audio guidance, script planning, reusable skills, and local or LAN AI backends.
 
-**Current source version:** v0.8.17 · **Latest published portable release:** v0.8.16 · **Platform:** Windows · **UI:** English / 简体中文
+**Current source version:** v0.8.18 · **Latest published portable release:** v0.8.16 · **Platform:** Windows · **UI:** English / 简体中文
 
 [Download the v0.8.16 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [Changelog](CHANGELOG.md)
 
@@ -107,10 +107,10 @@ The plugin is a companion integration and remains a test build. It is not yet fe
 
 ```powershell
 python -m pip install -r requirements-build.txt
-python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.17.spec
+python -m PyInstaller --noconfirm --clean H3PromptStudio-v0.8.18.spec
 ```
 
-The output is written to `dist/H3PromptStudio-v0.8.17.exe`. Build artifacts and release executables are intentionally excluded from Git history.
+The output is written to `dist/H3PromptStudio-v0.8.18.exe`. Build artifacts and release executables are intentionally excluded from Git history.
 
 ## Troubleshooting
 
