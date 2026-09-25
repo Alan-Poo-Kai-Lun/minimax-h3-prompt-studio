@@ -4,9 +4,9 @@
 
 A local-first desktop prompt workbench for MiniMax H3. Build T2VA, I2VA, FL2VA, L2VA, Ref2VA, and Hybrid prompts with visual references, video and audio guidance, script planning, reusable skills, and local or LAN AI backends.
 
-**Current source version:** v0.8.18 · **Latest published portable release:** v0.8.16 · **Platform:** Windows · **UI:** English / 简体中文
+**Current source version:** v0.8.18 · **Latest published portable release:** v0.8.18 · **Platform:** Windows · **UI:** English / 简体中文
 
-[Download the v0.8.16 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.16) · [Changelog](CHANGELOG.md)
+[Download the v0.8.18 EXE](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.18/H3PromptStudio-v0.8.18.exe) · [Release notes](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/tag/v0.8.18) · [Changelog](CHANGELOG.md)
 
 The portable EXE matches the current source release. You can also run from source or build the EXE using the instructions below.
 
@@ -45,7 +45,7 @@ The portable EXE matches the current source release. You can also run from sourc
 
 ### Windows portable build
 
-1. Download [H3PromptStudio-v0.8.16.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.16/H3PromptStudio-v0.8.16.exe).
+1. Download [H3PromptStudio-v0.8.18.exe](https://github.com/Alan-Poo-Kai-Lun/minimax-h3-prompt-studio/releases/download/v0.8.18/H3PromptStudio-v0.8.18.exe).
 2. Start Ollama or another supported AI backend.
 3. Run the EXE. The workspace normally opens at `http://127.0.0.1:8765`.
 4. Open **Settings**, select the backend, enter its address, and test the connection.
@@ -53,10 +53,10 @@ The portable EXE matches the current source release. You can also run from sourc
 
 The EXE does not include Ollama or any AI model. A vision-capable model is required when using Picture references. The portable build is currently unsigned, so Windows may identify it as an unrecognized application.
 
-SHA-256 for v0.8.16:
+SHA-256 for v0.8.18:
 
 ```text
-7347249E4D49769483F594BA0615380302DA46CA5FC34797A3944AE4C8AC991C
+3DFE433E09DC2F0C7C7CDFE510F71517582A9BCEEE444F7C0E3E7BE30DCC1BC6
 ```
 
 ### Run from source
